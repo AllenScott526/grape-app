@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grape Disease Detection</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #2d1b4e, #1a0a2e);
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      margin-top: 60px;
+    }
+
+    h1 {
+      font-size: 42px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #ddd;
+    }
+
+    .upload-box {
+      margin: 30px auto;
+      padding: 40px;
+      width: 320px;
+      border: 3px dashed #a855f7;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 18px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .upload-box:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    button {
+      padding: 14px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      margin-top: 20px;
+      max-width: 350px;
+      border-radius: 12px;
+    }
+
+    .result-box {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      display: inline-block;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🍇 Grape Disease Detection</h1>
+  <p>Upload a grape leaf image to detect disease</p>
+
+  <form action="/predict" method="post" enctype="multipart/form-data">
+
+    <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+      📤 Click here to upload image
+    </div>
+
+    <input type="file" id="fileInput" name="file" accept="image/*" required hidden>
+
+    <br>
+    <button type="submit">🔍 Predict</button>
+
+  </form>
+
+  <!-- Preview -->
+  <img id="previewImg" style="display:none;">
+
+  <!-- Result -->
+  {% if prediction %}
+  <div class="result-box">
+    <h2>🦠 Disease: {{ prediction }}</h2>
+    <p><b>💊 Remedy:</b> {{ remedy }}</p>
+
+    {% if img_path %}
+      <img src="{{ img_path }}">
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("previewImg");
+
+fileInput.addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+        preview.style.display = "block";
+        preview.src = URL.createObjectURL(file);
+    }
+});
+</script>
+
+</body>
+</html>
